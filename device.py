@@ -1,4 +1,5 @@
 
+from cmath import log
 from driver import config
 from hifiLogger import logger
 # 树莓派的设备抽象
@@ -6,6 +7,7 @@ from hifiLogger import logger
 
 class Device:
     def __init__(self, channelNumber, baudrate):
+        logger.debug("Init device with channel %s and baudrate %s", channelNumber, baudrate)
         self.__channel__ = config.config(Baudrate=baudrate, dev = "/dev/ttySC{}".format(channelNumber - 1))
 
     def send(self, request, needResponse = False, parser = None, bufferSize = 26):
