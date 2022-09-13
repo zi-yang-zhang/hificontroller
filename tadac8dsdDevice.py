@@ -7,16 +7,16 @@ from hifiLogger import logger
 # 主设备开关时发送开关指令
 
 class TADac8DSDStrategy:
-    def __init__(self, device) -> None:
+    def __init__(self, device: Device) -> None:
         self.__device__ = device
         pass
 
     def onMainDevicePowerOff(self):
-        logger.debug(self.__device__.send(power(False), True))
+        logger.debug(self.__device__.send(power(False), True, parseResponse))
         pass
 
     def onMainDevicePowerOn(self):
-        logger.debug(self.__device__.send(power(True), True))
+        logger.debug(self.__device__.send(power(True), True, parseResponse))
         pass
 
     def getDevice(self):
