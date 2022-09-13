@@ -27,8 +27,7 @@ class Peripheral(PeripheralController):
 
 # 控制器，可以添加周边设备，并触发周边设备对应的控制能力
 class Controller(object):
-    def __init__(self, name) -> None:
-        self.__name__ = name
+    def __init__(self) -> None:
         self.__peripherals__ = []
         pass
 
