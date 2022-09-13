@@ -12,11 +12,15 @@ class TADac8DSDStrategy:
         pass
 
     def onMainDevicePowerOff(self):
-        response = self.__device__.send(power(False), True, parseResponse)
+        command = power(False)
+        logger.debug("command %s", command)
+        response = self.__device__.send(command, True, parseResponse)
         logger.debug(response)
         pass
 
     def onMainDevicePowerOn(self):
+        command = power(True)
+        logger.debug("command %s", command)
         response = self.__device__.send(power(True), True, parseResponse)
         logger.debug(response)
         pass
