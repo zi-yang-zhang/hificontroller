@@ -9,7 +9,7 @@ baudrate = 38400
 
 
 def powerOn(on):
-    return "PWR {}\r\n".format("ON" if on else "OFF")
+    return "POWER {}\r\n".format("ON" if on else "OFF")
 
 
 # Input command
