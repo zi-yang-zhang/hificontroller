@@ -6,7 +6,7 @@ from tadac8dsdDevice import TADac8DSD
 from hifiController import Controller
 
 PORT = 5005
-YAMAHA_HOST = 'http://192.168.50.118'
+YAMAHA_HOST = 'http://192.168.50.119'
 
 driverDir = os.path.join(os.path.dirname(
     os.path.dirname(os.path.realpath(__file__))), 'driver')
