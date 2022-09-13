@@ -12,11 +12,13 @@ class TADac8DSDStrategy:
         pass
 
     def onMainDevicePowerOff(self):
-        logger.debug(self.__device__.send(power(False), True, parseResponse))
+        response = self.__device__.send(power(False), True, parseResponse)
+        logger.debug(response)
         pass
 
     def onMainDevicePowerOn(self):
-        logger.debug(self.__device__.send(power(True), True, parseResponse))
+        response = self.__device__.send(power(True), True, parseResponse)
+        logger.debug(response)
         pass
 
     def getDevice(self):
