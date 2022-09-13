@@ -13,7 +13,7 @@ class Device:
 
     def send(self, request, needResponse = False, parser = None, bufferSize = 26):
         logger.debug("Send request %s", request)
-        logger.debug("Send request ascii %s", request.encode("ascii"))
+        logger.debug("Send request ascii %b", request.encode("ascii"))
 
         self.__channel__.Uart_SendString(request)
         if needResponse: 
