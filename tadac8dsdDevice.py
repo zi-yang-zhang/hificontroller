@@ -1,4 +1,4 @@
-from protocol.dac8dsd import power, baudrate, parseResponse
+from protocol.dac8dsd import powerOn, baudrate, parseResponse
 from device import Device
 from hifiController import Peripheral
 from hifiLogger import logger
@@ -12,17 +12,11 @@ class TADac8DSDStrategy:
         pass
 
     def onMainDevicePowerOff(self):
-        command = power(False)
-        logger.debug("command %s", command)
-        response = self.__device__.send(command, True, parseResponse)
-        logger.debug(response)
+        logger.debug(self.__device__.send(powerOn(False), True, parseResponse))
         pass
 
     def onMainDevicePowerOn(self):
-        command = power(True)
-        logger.debug("command %s", command)
-        response = self.__device__.send(power(True), True, parseResponse)
-        logger.debug(response)
+        logger.debug(self.__device__.send(powerOn(True), True, parseResponse))
         pass
 
     def getDevice(self):

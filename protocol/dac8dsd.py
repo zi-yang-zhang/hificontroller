@@ -8,7 +8,7 @@ baudrate = 38400
 # Power command
 
 
-def power(on):
+def powerOn(on):
     return "PWR {}\r\n".format("ON" if on else "OFF")
 
 
@@ -117,6 +117,3 @@ def parseResponse(response):
     return data[0][len(">$"):], data[1]
 
 
-def start(op):
-    op(echo(True))
-    op(notify(notificationALL))
