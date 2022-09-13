@@ -40,4 +40,4 @@ class Controller(object):
 
     def onPowerOff(self):
         for p in self.__peripherals__:
-            p.onMainDevicePowerOn()
+            p.onMainDevicePowerOff()
