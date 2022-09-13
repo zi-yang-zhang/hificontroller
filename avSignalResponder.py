@@ -20,7 +20,7 @@ class AVSignalResponder:
         return
 
     def handle(self, handler: DatagramRequestHandler):
-        logger.debug('Got connection from', handler.client_address[0])
+        logger.debug('Got connection from', handler.client_address[0][0])
         msg, sock = handler.request
         # logger.debug(msg)
         response = json.loads(msg) 
