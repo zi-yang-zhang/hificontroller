@@ -13,10 +13,12 @@ class GoldmundStrategy:
         self.checkAndSetStatus()
         pass
 
+    # 主设备关机的话就恢复之前状态
     def onMainDevicePowerOff(self):
         self.restoreStatus()
         pass
-
+    
+    # 当主设备开启时，先记录当前设备状态，然后再调整到AV配置，如果没开机的话先开机
     def onMainDevicePowerOn(self):
         logger.info("Main device is on, try setInput to {} and setVolume to {}", AV_INPUT, AV_VOLUME)
         if self.__standby:
@@ -33,13 +35,16 @@ class GoldmundStrategy:
             code, result = self.send(volume(AV_VOLUME))
             logger.debug("Set Volume result: {}", code)
         pass
-
+    
+    # 回复上一次状态，如果上一次的状态本来就跟AV状态一样则不变。如果上一次是standby的则会关机
     def restoreStatus(self):
         logger.info("Restoring status for goldmund: standby {}, input {}, volume {}", self.__standby, self.__input, self.__volume)
         # 本来是关的就关掉
         if self.__standby:
             code, result = self.send(standby(self.__standby))
-        logger.debug("Set standby result: {}", code)
+            logger.debug("Set standby result: {}", code)
+            if isSuccess(code):
+                return
         if self.__volume != AV_VOLUME:
             code, result = self.send(volume(self.__volume))
             logger.debug("Set Volume result: {}", code)
@@ -47,6 +52,7 @@ class GoldmundStrategy:
             code, result = self.send(input(self.__input))
             logger.debug("Set Input result: {}", code)
     
+    # 查看机器状态，将开关机/输入/音量记录下来
     def checkAndSetStatus(self):
         code, standbyStatus = self.send(query(standby_command))
         if not isSuccess(code):
