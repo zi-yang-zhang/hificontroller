@@ -78,7 +78,7 @@ class GoldmundStrategy:
 
 
     def send(self, request):
-        return self.__device__.send(request, True, parseResponse, terminalChar= ">")
+        return self.__device__.sendWithTerminal(request, parseResponse, ">")
 
 class Goldmund(Peripheral):
     def __init__(self, channelNumber) -> None:
