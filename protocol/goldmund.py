@@ -60,7 +60,8 @@ def query(command):
     return "{}\r".format(command)
 
 def parseResponse(response):
-    if not response.startswith("ok: "):
+    responses = response.split("\n")
+    if not responses[1].startswith("ok: "):
         return "", ""
-    data = response.split(" ")
+    data = responses[1].split(" ")
     return data[1], data[2]

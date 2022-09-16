@@ -22,11 +22,7 @@ class GoldmundStrategy:
         logger.info("Main device is on, try set input to 7 and volumn to 70")
         result = self.__device__.send(
             query(standby_command), True, parseResponse)
-        if result[1] == "off":
-            logger.debug(self.__device__.send(standby(True), True))
-            self.wasOn = False
-        else:
-            self.wasOn = True
+        logger.debug(self.__device__.send(standby(True), True))
         logger.debug(result)
         # logger.info("Device was on %s", self.wasOn)
         logger.debug(self.__device__.send(setInput(7)))
