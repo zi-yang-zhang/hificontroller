@@ -1,7 +1,8 @@
-from protocol.goldmund import standby, setInput, setVolume, baudrate, query, standby_command, parseResponse, volume, volume_command, isSuccess, input_command
+from protocol.goldmund import standby, setInput, setVolume, baudrate, query, standby_command, parseResponse, volume_command, isSuccess, input_command
 from hifiController import Peripheral
 from device import Device
 from hifiLogger import logger
+
 # Goldmund设备策略
 # 主设备开时开设备，并调节到频道7，音量85
 
@@ -29,10 +30,10 @@ class GoldmundStrategy:
                 logger.error("Standby command failed {},{}", code, result)
                 return
         if self.__input != AV_INPUT:
-            code, result = self.send(input(AV_INPUT))
+            code, result = self.send(setInput(AV_INPUT))
             logger.debug("Set Input result: {}", code)
         if self.__volume != AV_VOLUME:
-            code, result = self.send(volume(AV_VOLUME))
+            code, result = self.send(setVolume(AV_VOLUME))
             logger.debug("Set Volume result: {}", code)
         pass
     
@@ -46,10 +47,10 @@ class GoldmundStrategy:
             if isSuccess(code):
                 return
         if self.__volume != AV_VOLUME:
-            code, result = self.send(volume(self.__volume))
+            code, result = self.send(setVolume(self.__volume))
             logger.debug("Set Volume result: {}", code)
         if self.__input != AV_INPUT:
-            code, result = self.send(input(self.__input))
+            code, result = self.send(setInput(self.__input))
             logger.debug("Set Input result: {}", code)
     
     # 查看机器状态，将开关机/输入/音量记录下来
