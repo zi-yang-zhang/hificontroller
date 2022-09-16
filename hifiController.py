@@ -11,11 +11,11 @@ class Strategy:
 class PeripheralController:
     def onMainDevicePowerOn(self):
         self.__strategy__.onMainDevicePowerOn()
-        logger.debug(format("%s onMainDevicePowerOn", self.__name__))
+        logger.debug(format("{} onMainDevicePowerOn", self.__name__))
 
     def onMainDevicePowerOff(self):
         self.__strategy__.onMainDevicePowerOff()
-        logger.debug(format("%s onMainDevicePowerOff", self.__name__))
+        logger.debug(format("{} onMainDevicePowerOff", self.__name__))
 
 # 周边设备定义，用于设置对应的策略，目前是响应主设备开关
 class Peripheral(PeripheralController):
