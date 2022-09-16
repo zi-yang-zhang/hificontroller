@@ -1,4 +1,4 @@
-from protocol.goldmund import standby, setInput, setVolumn, baudrate, query, standby_command, parseResponse
+from protocol.goldmund import standby, setInput, setVolume, baudrate, query, standby_command, parseResponse
 from hifiController import Peripheral
 from device import Device
 from hifiLogger import logger
@@ -19,14 +19,14 @@ class GoldmundStrategy:
         pass
 
     def onMainDevicePowerOn(self):
-        logger.info("Main device is on, try set input to 7 and volumn to 70")
+        logger.info("Main device is on, try setInput to 7 and setVolume to 70")
         result = self.__device__.send(
             query(standby_command), True, parseResponse)
         logger.debug(self.__device__.send(standby(True), True))
         logger.debug(result)
         # logger.info("Device was on %s", self.wasOn)
         logger.debug(self.__device__.send(setInput(7)))
-        logger.debug(self.__device__.send(setVolumn(70)))
+        logger.debug(self.__device__.send(setVolume(70)))
         pass
 
 

@@ -15,15 +15,15 @@ def standby(on):
 def toggleStandby():
     return "standby toggle\r"
 
-# volumn command
+# volume command
 
 
-def volumn(up):
-    return "volumn {}\r".format("up" if up else "down")
+def volume(up):
+    return "volume {}\r".format("up" if up else "down")
 
 
-def setVolumn(level):
-    return "volumn {}\r".format(level)
+def setVolume(level):
+    return "volume {}\r".format(level)
 
 # input command
 
@@ -52,7 +52,7 @@ def toggleMute():
 
 # query command
 standby_command = "standby"
-volumn_command = "volumn"
+volume_command = "volume"
 input_command = "input"
 mute_command = "mute"
 
