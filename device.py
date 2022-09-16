@@ -32,5 +32,15 @@ class Device:
             return response
         return parser(response)
 
+    def sendWithLines(self, request, parser = None, lines = 1):
+        logger.debug("Send request: %s", request)
+        self.__channel__.Uart_SendString(request)
+        logger.debug("Wait for %s lines", lines)
+        response = self.__channel__.Uart_ReceiveStringLines(lines)
+        logger.debug("Response: %s",response)
+        if parser is None:
+            return response
+        return parser(response)
+
     def getChannel(self):
         return self.__channel__
