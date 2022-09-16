@@ -13,7 +13,6 @@ class Device:
 
     def send(self, request, needResponse = False, parser = None, bufferSize = 26):
         logger.debug("Send request %s", request)
-
         self.__channel__.Uart_SendString(request)
         if needResponse: 
             response = self.__channel__.Uart_ReceiveString(bufferSize)
@@ -22,6 +21,17 @@ class Device:
                 return response
             return parser(response)
         return "No response"
-        
+
+    def send(self, request, needResponse = False, parser = None, terminalChar = "\n"):
+        logger.debug("Send request %s", request)
+        self.__channel__.Uart_SendString(request)
+        if needResponse: 
+            response = self.__channel__.Uart_ReceiveStringUntil(terminalChar)
+            logger.debug("Response:%s",response)
+            if parser is None:
+                return response
+            return parser(response)
+        return "No response"
+
     def getChannel(self):
         return self.__channel__

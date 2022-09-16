@@ -59,9 +59,12 @@ mute_command = "mute"
 def query(command):
     return "{}\r\n".format(command)
 
+# response format:
+# $command\r\nok: $response\r\n>
+# $command\r\nerr: $response\r\n>
 def parseResponse(response):
-    responses = response.split("\n")
-    if not responses[1].startswith("ok: "):
-        return response, ""
-    data = responses[1].split(" ")
-    return data[1], data[2]
+    responses = response.split("\r\n")
+    return responses[1].split(" ", 1)
+
+def isSuccess(code):
+    return code == "ok:"

@@ -23,6 +23,10 @@ class config(object):
     def Uart_ReceiveString(ser, value): 
         data = ser.serial.read(value)
         return data.decode("utf-8")
+
+    def Uart_ReceiveStringUntil(ser, terminal):
+        data = ser.serial.read_until(terminal)
+        return data.decode("utf-8")
         
     def Uart_Set_Baudrate(ser, Baudrate):
          ser.serial = serial.Serial(ser.dev, Baudrate)
