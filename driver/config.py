@@ -24,13 +24,13 @@ class config(object):
         data = ser.serial.read(value)
         return data.decode("utf-8")
 
-    def Uart_ReceiveStringLines(ser, lines = 1):
+    def Uart_ReceiveStringLines(ser, lines):
         data = ser.serial.readlines(lines)
         response = ""
         for l in data:
             response += l.decode("utf-8")
         return response
-        
+
     def Uart_ReceiveStringUntil(ser, terminal):
         data = ser.serial.read_until(terminal)
         return data.decode("utf-8")

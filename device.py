@@ -32,6 +32,20 @@ class Device:
             return response
         return parser(response)
 
+    def sendUntilTerminal(self, request, parser = None, terminalChar = "\n"):
+        logger.debug("Send request: %s", request)
+        self.__channel__.Uart_SendString(request)
+        logger.debug("Wait for %s", terminalChar)
+        current = ""
+        response = ""
+        while current != terminalChar:
+            current = self.__channel__.Uart_ReceiveString(1)
+            response += current
+        logger.debug("Response: %s",response)
+        if parser is None:
+            return response
+        return parser(response)
+
     def sendWithLines(self, request, parser = None, lines = 1):
         logger.debug("Send request: %s", request)
         self.__channel__.Uart_SendString(request)
