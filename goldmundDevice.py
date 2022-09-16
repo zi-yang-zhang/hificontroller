@@ -22,6 +22,7 @@ class GoldmundStrategy:
     # 当主设备开启时，先记录当前设备状态，然后再调整到AV配置，如果没开机的话先开机
     def onMainDevicePowerOn(self):
         logger.info("Main device is on, try setInput to %s and setVolume to %s", AV_INPUT, AV_VOLUME)
+        self.checkAndSetStatus()
         if self.__standby:
             logger.info("Goldmund is off, turining it on")
             code, result = self.send(standby(False))
