@@ -11,7 +11,7 @@ class Device:
         self.__channel__ = config.config(Baudrate=baudrate, dev = "/dev/ttySC{}".format(channelNumber - 1))
         self.__channel__.dev
 
-    def send(self, request, needResponse = False, parser = None, bufferSize = 64):
+    def send(self, request, needResponse = False, parser = None, bufferSize = 26):
         logger.debug("Send request %s", request)
 
         self.__channel__.Uart_SendString(request)
