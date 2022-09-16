@@ -2,7 +2,7 @@ import os
 import sys
 from hifiLogger import logger
 from controlServer import YamahaControlServer
-from tadac8dsdDevice import TADac8DSD
+from goldmundDevice import Goldmund
 from hifiController import Controller
 
 PORT = 5005
@@ -21,7 +21,7 @@ if os.path.exists(protocolDir):
 if __name__ == '__main__':
     try:
         controller = Controller()
-        controller.addPeripheral(TADac8DSD(1))
+        controller.addPeripheral(Goldmund(1))
         server = YamahaControlServer(YAMAHA_HOST, PORT, controller)
         server.startServer()
         
