@@ -9,13 +9,13 @@ from hifiLogger import logger
 class GoldmundStrategy:
     def __init__(self, device) -> None:
         self.__device__ = device
-        self.wasOn = False
+        # self.wasOn = False
         pass
 
     def onMainDevicePowerOff(self):
-        if not self.wasOn:
-            logger.debug(self.__device__.send(standby(False)), True)
-        self.wasOn = False
+        # if not self.wasOn:
+        #     logger.debug(self.__device__.send(standby(False)), True)
+        # self.wasOn = False
         pass
 
     def onMainDevicePowerOn(self):
@@ -27,7 +27,8 @@ class GoldmundStrategy:
             self.wasOn = False
         else:
             self.wasOn = True
-        logger.info("Device was on %s", self.wasOn)
+        logger.debug(result)
+        # logger.info("Device was on %s", self.wasOn)
         logger.debug(self.__device__.send(setInput(7)))
         logger.debug(self.__device__.send(setVolumn(70)))
         pass
