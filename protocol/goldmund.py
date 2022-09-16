@@ -9,45 +9,45 @@ baudrate = 115200
 
 
 def standby(on):
-    return "standby {}\r".format("on" if on else "off")
+    return "standby {}\r\n".format("on" if on else "off")
 
 
 def toggleStandby():
-    return "standby toggle\r"
+    return "standby toggle\r\n"
 
 # volume command
 
 
 def volume(up):
-    return "volume {}\r".format("up" if up else "down")
+    return "volume {}\r\n".format("up" if up else "down")
 
 
 def setVolume(level):
-    return "volume {}\r".format(level)
+    return "volume {}\r\n".format(level)
 
 # input command
 
 
 def nextInput():
-    return "input next\r"
+    return "input next\r\n"
 
 
 def previousInput():
-    return "input prev\r"
+    return "input prev\r\n"
 
 
 def setInput(input):
-    return "input {}\r".format(input)
+    return "input {}\r\n".format(input)
 
 
 # mute command
 
 def mute(on):
-    return "mute {}\r".format("on" if on else "off")
+    return "mute {}\r\n".format("on" if on else "off")
 
 
 def toggleMute():
-    return "mute toggle\r"
+    return "mute toggle\r\n"
 
 
 # query command
@@ -57,7 +57,7 @@ input_command = "input"
 mute_command = "mute"
 
 def query(command):
-    return "{}\r".format(command)
+    return "{}\r\n".format(command)
 
 def parseResponse(response):
     responses = response.split("\n")
