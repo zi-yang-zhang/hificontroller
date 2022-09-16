@@ -39,7 +39,7 @@ class GoldmundStrategy:
     
     # 回复上一次状态，如果上一次的状态本来就跟AV状态一样则不变。如果上一次是standby的则会关机
     def restoreStatus(self):
-        logger.info("Restoring status for goldmund: standby {}, input {}, volume {}", self.__standby, self.__input, self.__volume)
+        logger.info("Restoring status for goldmund: standby {}, input {}, volume {}", str(self.__standby), self.__input, self.__volume)
         # 本来是关的就关掉
         if self.__standby:
             code, result = self.send(standby(self.__standby))
@@ -73,7 +73,7 @@ class GoldmundStrategy:
         self.__input = inputNumber
         self.__standby = status == "on"
         self.__volume = volumeNumber
-        logger.info("Current status for goldmund: standby {}, input {}, volume {}", self.__standby, self.__input, self.__volume)
+        logger.info("Current status for goldmund: standby {}, input {}, volume {}", str(self.__standby), self.__input, self.__volume)
         return 
 
 
