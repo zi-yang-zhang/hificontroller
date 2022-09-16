@@ -23,11 +23,11 @@ class Device:
         return "No response"
 
     def sendWithTerminal(self, request, parser = None, terminalChar = "\n"):
-        logger.debug("Send request %s", request)
+        logger.debug("Send request: %s", request)
         self.__channel__.Uart_SendString(request)
-        logger.debug("Wait for {}", terminalChar)
+        logger.debug("Wait for %s", terminalChar)
         response = self.__channel__.Uart_ReceiveStringUntil(terminalChar)
-        logger.debug("Response:%s",response)
+        logger.debug("Response: %s",response)
         if parser is None:
             return response
         return parser(response)
