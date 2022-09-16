@@ -20,10 +20,10 @@ class GoldmundStrategy:
 
     def onMainDevicePowerOn(self):
         logger.info("Main device is on, try setInput to 7 and setVolume to 70")
-        # result = self.__device__.send(
-        #     query(standby_command), True, parseResponse)
+        result = self.__device__.send(
+            query(standby_command), True, parseResponse)
         logger.debug(self.__device__.send(standby(False), True, parseResponse))
-        # logger.debug(result)
+        logger.debug(result)
         # logger.info("Device was on %s", self.wasOn)
         logger.debug(self.__device__.send(setInput(7),True, parseResponse))
         logger.debug(self.__device__.send(setVolume(70),True, parseResponse))
