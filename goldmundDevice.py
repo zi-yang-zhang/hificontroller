@@ -6,7 +6,7 @@ from hifiLogger import logger
 # Goldmund设备策略
 # 主设备开时开设备，并调节到频道7，音量85
 
-AV_INPUT = 7
+AV_INPUT = 5
 AV_VOLUME = 75
 class GoldmundStrategy:
     def __init__(self, device: Device) -> None:
