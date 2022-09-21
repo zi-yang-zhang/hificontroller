@@ -26,11 +26,15 @@ class YamahaControlServer:
         pass
 
     def triggerYamahaEvent(self):
-        logger.info("call server")
-        http = urllib3.PoolManager()
-        response = http.request('GET', self.__host__ + '/YamahaExtendedControl/v1/system/getDeviceInfo', headers={'X-AppName': 'MusicCast/1.0(YamahaControlServer)',
-                                                                                                                  'X-AppPort': self.__port__})
-        logger.info(response.data)
+        try:
+            logger.info("call server")
+            http = urllib3.PoolManager()
+            response = http.request('GET', self.__host__ + '/YamahaExtendedControl/v1/system/getDeviceInfo', headers={'X-AppName': 'MusicCast/1.0(YamahaControlServer)',
+                                                                                                                    'X-AppPort': self.__port__})
+            logger.info(response.data)
+        except Exception as err:
+            logger.error("trigger error: {0}", err)
+
 
     def startYamahaEventTrigger(self):
         self.triggerYamahaEvent()
