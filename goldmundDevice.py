@@ -34,7 +34,7 @@ class GoldmundStrategy:
             code, result = self.send(setInput(AV_INPUT))
             logger.debug("Set Input result: %s", code)
         if self.__volume != AV_VOLUME:
-            code, result = self.send(volumeUp(True))
+            code, result = self.send(volumeUp(AV_VOLUME))
             logger.debug("Set Volume result: %s", code)
         pass
     
