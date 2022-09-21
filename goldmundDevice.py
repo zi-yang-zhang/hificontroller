@@ -1,4 +1,4 @@
-from protocol.goldmund import standby, setInput, setVolume, baudrate, query, standby_command, parseResponse, volume_command, isSuccess, input_command
+from protocol.goldmund import standby, setInput, setVolume, volumeUp, baudrate, query, standby_command, parseResponse, volume_command, isSuccess, input_command
 from hifiController import Peripheral
 from device import Device
 from hifiLogger import logger
@@ -34,7 +34,7 @@ class GoldmundStrategy:
             code, result = self.send(setInput(AV_INPUT))
             logger.debug("Set Input result: %s", code)
         if self.__volume != AV_VOLUME:
-            code, result = self.send(setVolume(AV_VOLUME))
+            code, result = self.send(volumeUp(True))
             logger.debug("Set Volume result: %s", code)
         pass
     

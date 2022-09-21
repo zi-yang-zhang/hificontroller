@@ -18,7 +18,7 @@ def toggleStandby():
 # volume command
 
 
-def volume(up):
+def volumeUp(up):
     return "volume {}\r\n".format("up" if up else "down")
 
 
