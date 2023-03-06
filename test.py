@@ -19,10 +19,9 @@ class IR:
             logger.debug("Volumn up by %d", diff)
             cmd = "{}:{}\n".format("1", diff)
         logger.debug("cmd:%s", cmd)
-        logger.debug("is open:%s", self.__irDevice__.is_open)
+        logger.debug("writable:%s", self.__irDevice__.writable)
         
-        # sent = self.__irDevice__.write(cmd.encode('utf-8'))        
-        sent = self.__irDevice__.write(b'1:10')        
+        sent = self.__irDevice__.write(cmd.encode('utf-8'))        
         logger.debug("sent:%d", sent)
     
         while True:
