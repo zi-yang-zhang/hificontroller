@@ -7,14 +7,17 @@ class IR:
         self.__irDevice__ = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
 
     def setVolumeByIR(self, currentVol, newVol):
-        diff = currentVol - newVol
+        diff = newVol - currentVol
+        cmd = ""
         if diff < 0:
             vol = diff * -1
+            cmd = "{}:{}\n".format("2", vol)
             logger.debug("Volumn down by %d", vol)
-            self.__irDevice__.write("{}:{}\n".format("2", vol).encode())
         else:
             logger.debug("Volumn up by %d", diff)
-            self.__irDevice__.write("{}:{}\n".format("1", diff).encode())
+            cmd = "{}:{}\n".format("1", diff)
+        logger.debug("cmd:%s", cmd)
+        self.__irDevice__.write(cmd.encode())
         while True:
             if self.__irDevice__.in_waiting > 0:
                 line = self.__irDevice__.readline().decode('utf-8').rstrip()
