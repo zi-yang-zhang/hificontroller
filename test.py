@@ -10,10 +10,10 @@ class IR:
         diff = currentVol - newVol
         if diff < 0:
             logger.debug("Volumn down by {}", diff * -1)
-            self.__irDevice__.write(b"{}:{}\n".format("2", diff * -1))
+            self.__irDevice__.write("{}:{}\n".format("2", diff * -1).encode('ascii'))
         else:
             logger.debug("Volumn up by {}", diff)
-            self.__irDevice__.write(b"{}:{}\n".format("1", diff))
+            self.__irDevice__.write("{}:{}\n".format("1", diff).encode('ascii'))
         result = self.__irDevice__.readline()
         logger.debug("Volumn result {}", result)
 
