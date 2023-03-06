@@ -21,7 +21,8 @@ class IR:
         logger.debug("cmd:%s", cmd)
         logger.debug("is open:%s", self.__irDevice__.is_open)
         
-        sent = self.__irDevice__.write(cmd.encode('utf-8'))        
+        # sent = self.__irDevice__.write(cmd.encode('utf-8'))        
+        sent = self.__irDevice__.write(b'1:10')        
         logger.debug("sent:%d", sent)
     
         while True:
