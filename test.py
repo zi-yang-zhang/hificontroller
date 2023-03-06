@@ -1,12 +1,13 @@
 
 from hifiLogger import logger
-import serial
+import serial, time
 
 class IR:
     def __init__(self) -> None:
         self.__irDevice__ = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
         self.__irDevice__.reset_input_buffer()
         self.__irDevice__.reset_output_buffer()
+        time.sleep(0.1) #wait for serial to open
 
     def setVolumeByIR(self, currentVol, newVol):
         diff = newVol - currentVol
