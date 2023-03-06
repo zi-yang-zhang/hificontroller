@@ -44,11 +44,12 @@ class IR:
 
 if __name__ == '__main__':
     try:
+        ir = IR()
         while True:
             # currentVol = int(input("current volume: "))
             # newVol = int(input("new volume: "))
             # IR().setVolumeByIR(currentVol, newVol)
-            IR().sendcmd(input("cmd:"))
+            ir.sendcmd(input("cmd:"))
     except KeyboardInterrupt:
         logger.info("ctrl + c:")
         exit()
