@@ -33,7 +33,9 @@ class IR:
 
     def sendcmd(self, cmd):
         logger.debug("cmd:%s", cmd)        
-        sent = self.__irDevice__.write(cmd.encode('utf-8'))        
+        sent = self.__irDevice__.write(cmd.encode('utf-8'))
+        logger.debug("sent:%d", sent)     
+        sent = self.__irDevice__.write(b'\n')        
         logger.debug("sent:%d", sent)
         if self.__irDevice__.in_waiting > 0:
                 line = self.__irDevice__.readline().decode('utf-8').rstrip()
