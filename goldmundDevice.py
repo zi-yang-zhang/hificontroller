@@ -8,10 +8,10 @@ import serial
 # 主设备开时开设备，并调节到频道7，音量85
 
 AV_INPUT = 5
-AV_VOLUME = 75
+AV_VOLUME = 80
 VOL_UP = "1"
 VOL_DOWN = "2"
-
+MAX_RETRY = 6
 
 class GoldmundStrategy:
     def __init__(self, device: Device) -> None:
@@ -89,18 +89,23 @@ class GoldmundStrategy:
         return
 
     def setVolumeByIR(self, vol, retries=0):
-        if retries == 3:
+        if retries == MAX_RETRY:
             logger.error("Max retried %s,%s", vol, retries)
             return
         diff = AV_VOLUME - vol
+        cmd = ""
         if diff < 0:
-            logger.debug("Volumn down by {}", diff * -1)
-            self.__irDevice__.write(b"{}:{}\n".format(VOL_DOWN, diff * -1))
+            vol = diff * -1
+            cmd = VOL_DOWN + str(vol)
+            logger.debug("Volumn down by %d", vol)
         else:
-            logger.debug("Volumn up by {}", diff)
-            self.__irDevice__.write(b"{}:{}\n".format(VOL_UP, diff))
-        result = self.__irDevice__.readline()
-        logger.debug("Volumn result {}", result)
+            logger.debug("Volumn up by %d", diff)
+            cmd = VOL_DOWN + str(diff)
+        sent = self.__irDevice__.write(cmd.encode('utf-8'))
+        while  self.__irDevice__.in_waiting == 0: pass
+        while self.__irDevice__.in_waiting > 0:
+            result = self.__irDevice__.readline().decode('utf-8').rstrip()
+            logger.debug("Volumn result {}", result)
         code, volume = self.send(query(volume_command))
         if not isSuccess(code):
             logger.error("Query failed %s,%s", code, volume)
