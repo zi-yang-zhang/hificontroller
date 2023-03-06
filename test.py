@@ -9,8 +9,9 @@ class IR:
     def setVolumeByIR(self, currentVol, newVol):
         diff = currentVol - newVol
         if diff < 0:
-            logger.debug("Volumn down by {}", diff * -1)
-            self.__irDevice__.write("{}:{}\n".format("2", diff * -1).encode('ascii'))
+            vol = diff * -1
+            logger.debug("Volumn down by {}", vol)
+            self.__irDevice__.write("{}:{}\n".format("2", vol).encode('ascii'))
         else:
             logger.debug("Volumn up by {}", diff)
             self.__irDevice__.write("{}:{}\n".format("1", diff).encode('ascii'))
