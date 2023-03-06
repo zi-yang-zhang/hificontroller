@@ -11,13 +11,14 @@ class IR:
         if diff < 0:
             vol = diff * -1
             logger.debug("Volumn down by %d", vol)
-            self.__irDevice__.write("{}:{}\n".format("2", vol).encode('ascii'))
+            self.__irDevice__.write("{}:{}\n".format("2", vol).encode())
         else:
             logger.debug("Volumn up by %d", diff)
-            self.__irDevice__.write("{}:{}\n".format("1", diff).encode('ascii'))
+            self.__irDevice__.write("{}:{}\n".format("1", diff).encode())
         while True:
-            result = self.__irDevice__.readline()
-            logger.debug("Volumn result %s", result.decode())
+            if self.__irDevice__.in_waiting > 0:
+                line = self.__irDevice__.readline().decode('utf-8').rstrip()
+                logger.debug(line)
 
 
 if __name__ == '__main__':
