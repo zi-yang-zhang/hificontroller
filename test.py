@@ -15,8 +15,9 @@ class IR:
         else:
             logger.debug("Volumn up by %d", diff)
             self.__irDevice__.write("{}:{}\n".format("1", diff).encode('ascii'))
-        result = self.__irDevice__.readline()
-        logger.debug("Volumn result %s", result.decode())
+        while True:
+            result = self.__irDevice__.readline()
+            logger.debug("Volumn result %s", result.decode())
 
 
 if __name__ == '__main__':
