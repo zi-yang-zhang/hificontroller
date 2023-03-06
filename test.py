@@ -18,6 +18,7 @@ class IR:
             cmd = "{}:{}\n".format("1", diff)
         logger.debug("cmd:%s", cmd)
         self.__irDevice__.write(cmd.encode('utf-8'))
+        self.__irDevice__.flush()
         while True:
             if self.__irDevice__.in_waiting > 0:
                 line = self.__irDevice__.readline().decode('utf-8').rstrip()
