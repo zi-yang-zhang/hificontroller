@@ -13,10 +13,10 @@ class IR:
             logger.debug("Volumn down by %d", vol)
             self.__irDevice__.write("{}:{}\n".format("2", vol).encode('ascii'))
         else:
-            logger.debug("Volumn up by {}", diff)
+            logger.debug("Volumn up by %d", diff)
             self.__irDevice__.write("{}:{}\n".format("1", diff).encode('ascii'))
         result = self.__irDevice__.readline()
-        logger.debug("Volumn result %d", result.decode())
+        logger.debug("Volumn result %s", result.decode())
 
 
 if __name__ == '__main__':
