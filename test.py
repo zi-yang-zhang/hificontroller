@@ -31,12 +31,22 @@ class IR:
                 line = self.__irDevice__.readline().decode('utf-8').rstrip()
                 logger.debug(line)
 
+    def sendcmd(self, cmd):
+        logger.debug("cmd:%s", cmd)        
+        sent = self.__irDevice__.write(cmd.encode('utf-8'))        
+        logger.debug("sent:%d", sent)
+        if self.__irDevice__.in_waiting > 0:
+                line = self.__irDevice__.readline().decode('utf-8').rstrip()
+                logger.debug(line)
+
 
 if __name__ == '__main__':
     try:
-        currentVol = int(input("current volume: "))
-        newVol = int(input("new volume: "))
-        IR().setVolumeByIR(currentVol, newVol)
+        while True:
+            # currentVol = int(input("current volume: "))
+            # newVol = int(input("new volume: "))
+            # IR().setVolumeByIR(currentVol, newVol)
+            IR().sendcmd(input("cmd:"))
     except KeyboardInterrupt:
         logger.info("ctrl + c:")
         exit()
