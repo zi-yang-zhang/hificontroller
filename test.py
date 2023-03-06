@@ -5,6 +5,8 @@ import serial
 class IR:
     def __init__(self) -> None:
         self.__irDevice__ = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
+        self.__irDevice__.reset_input_buffer()
+        self.__irDevice__.reset_output_buffer()
 
     def setVolumeByIR(self, currentVol, newVol):
         diff = newVol - currentVol
