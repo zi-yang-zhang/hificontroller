@@ -26,6 +26,7 @@ class IR:
         logger.debug("sent:%d", sent)
     
         while True:
+            sent = self.__irDevice__.write(b'1')        
             if self.__irDevice__.in_waiting > 0:
                 line = self.__irDevice__.readline().decode('utf-8').rstrip()
                 logger.debug(line)
