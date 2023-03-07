@@ -121,6 +121,7 @@ class GoldmundStrategy:
             logger.error("Max retried %s,%s", targetVol, retries)
             return
         diff = targetVol - curVol
+        if diff == 0: return
         cmd = ""
         if diff < 0:
             vol = diff * -1
@@ -135,6 +136,10 @@ class GoldmundStrategy:
         while self.__irDevice__.in_waiting > 0:
             result = self.__irDevice__.readline().decode('utf-8').rstrip()
             logger.debug("Volumn result %s", result)
+        code, standbyStatus  = self.getStandbyStatus()
+        if not isSuccess(code) or standbyStatus != "on":
+            logger.debug("standbyStatus is not on: %s", standbyStatus)
+            return
         code, volume = self.getVolumneStatus()
         if int(volume) != targetVol:
             logger.debug("Volumn not acurate %s, retry", volume)
