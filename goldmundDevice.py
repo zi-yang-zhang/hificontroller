@@ -58,33 +58,59 @@ class GoldmundStrategy:
             logger.debug("Set standby result: %s", code)
             if isSuccess(code):
                 return
-        if self.__volume != AV_VOLUME:
-            self.setVolumeByIR(int(self.__volume), AV_VOLUME)
+        code, input = self.getInputStatus()
+        if not isSuccess(code):
+            return
+        # 不在av频道就不回切了
+        if input != AV_INPUT:
+            logger.debug("Input already swiched %s, won't restore",input)
+            return
+        code, volume = self.getVolumneStatus()
+        if not isSuccess(code):
+            return
+        if self.__volume != volume:
+            self.setVolumeByIR(int(self.__volume), int(volume))
             logger.debug("Set Volume result")
-        if self.__input != AV_INPUT:
+        if self.__input != input:
             code, result = self.send(setInput(self.__input))
             logger.debug("Set Input result: %s", code)
 
-    # 查看机器状态，将开关机/输入/音量记录下来
-    def checkAndSetStatus(self):
+    def getStandbyStatus(self):
         code, standbyStatus = self.send(query(standby_command))
         if not isSuccess(code):
             logger.error("Query failed %s,%s", code, standbyStatus)
-            return
+            return code, ""
         command, status = standbyStatus.split(" ")
+        return code, status
+    def getInputStatus(self):
         code, input = self.send(query(input_command))
         if not isSuccess(code):
             logger.error("Query failed %s,%s", code, input)
-            return
+            return code, ""
         command, inputNumber = input.split(" ")
-        code, volume = self.send(query(volume_command))
+        return code, inputNumber
+    def getVolumneStatus(self):
+        code, volumne = self.send(query(volume_command))
         if not isSuccess(code):
-            logger.error("Query failed %s,%s", code, volume)
+            logger.error("Query failed %s,%s", code, volumne)
+            return code, ""
+        command, volumeNumber = volumne.split(" ")
+        return code, volumeNumber
+    
+    # 查看机器状态，将开关机/输入/音量记录下来
+    def checkAndSetStatus(self):
+        code, standbyStatus  = self.getStandbyStatus()
+        if not isSuccess(code):
             return
-        command, volumeNumber = volume.split(" ")
-        self.__input = inputNumber
-        self.__standby = status == "on"
-        self.__volume = volumeNumber
+        code, input = self.getInputStatus()
+        if not isSuccess(code):
+            return
+        code, volume = self.getVolumneStatus()
+        if not isSuccess(code):
+            return
+        self.__input = input
+        self.__standby = standbyStatus == "on"
+        self.__volume = volume
         logger.info("Current status for goldmund: standby %s, input %s, volume %s",
                     self.__standby, self.__input, self.__volume)
         return
@@ -109,14 +135,10 @@ class GoldmundStrategy:
         while self.__irDevice__.in_waiting > 0:
             result = self.__irDevice__.readline().decode('utf-8').rstrip()
             logger.debug("Volumn result %s", result)
-        code, volume = self.send(query(volume_command))
-        if not isSuccess(code):
-            logger.error("Query failed %s,%s", code, volumeNumber)
-            return
-        command, volumeNumber = volume.split(" ")
-        if int(volumeNumber) != targetVol:
-            logger.debug("Volumn not acurate %s, retry", volumeNumber)
-            self.setVolumeByIR(targetVol, int(volumeNumber), retries + 1)
+        code, volume = self.getVolumneStatus()
+        if int(volume) != targetVol:
+            logger.debug("Volumn not acurate %s, retry", volume)
+            self.setVolumeByIR(targetVol, int(volume), retries + 1)
 
     def send(self, request):
         return self.__device__.sendUntilTerminal(request, parseResponse, ">")
