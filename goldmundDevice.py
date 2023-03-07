@@ -102,7 +102,7 @@ class GoldmundStrategy:
             logger.debug("Volumn down by %d", vol)
         else:
             logger.debug("Volumn up by %d", diff)
-            cmd = VOL_DOWN + str(diff)
+            cmd = VOL_UP + str(diff)
         logger.debug("Send ir command %s", cmd)
         sent = self.__irDevice__.write(cmd.encode('utf-8'))
         while  self.__irDevice__.in_waiting == 0: pass
