@@ -44,7 +44,7 @@ class GoldmundStrategy:
             code, result = self.send(setInput(AV_INPUT))
             logger.debug("Set Input result: %s", code)
         if self.__volume != AV_VOLUME:
-            self.setVolumeByIR(AV_VOLUME, self.__volume)
+            self.setVolumeByIR(AV_VOLUME, int(self.__volume))
             logger.debug("Set Volume result")
         pass
 
@@ -59,7 +59,7 @@ class GoldmundStrategy:
             if isSuccess(code):
                 return
         if self.__volume != AV_VOLUME:
-            self.setVolumeByIR(self.__volume, AV_VOLUME)
+            self.setVolumeByIR(int(self.__volume), AV_VOLUME)
             logger.debug("Set Volume result")
         if self.__input != AV_INPUT:
             code, result = self.send(setInput(self.__input))
@@ -89,7 +89,7 @@ class GoldmundStrategy:
                     self.__standby, self.__input, self.__volume)
         return
 
-    def setVolumeByIR(self, targetVol, curVol, retries=0):
+    def setVolumeByIR(self, targetVol: int, curVol: int, retries: int=0):
         logger.debug("setVolumeByIR target:%d, currentVol:%d retries:%d",targetVol, curVol, retries)
         if retries == MAX_RETRY:
             logger.error("Max retried %s,%s", targetVol, retries)
@@ -108,15 +108,15 @@ class GoldmundStrategy:
         while  self.__irDevice__.in_waiting == 0: pass
         while self.__irDevice__.in_waiting > 0:
             result = self.__irDevice__.readline().decode('utf-8').rstrip()
-            logger.debug("Volumn result {}", result)
+            logger.debug("Volumn result %s", result)
         code, volume = self.send(query(volume_command))
         if not isSuccess(code):
             logger.error("Query failed %s,%s", code, volumeNumber)
             return
         command, volumeNumber = volume.split(" ")
-        if volumeNumber != targetVol:
-            logger.debug("Volumn not acurate {}, retry", volumeNumber)
-            self.setVolumeByIR(targetVol, volumeNumber, retries + 1)
+        if int(volumeNumber) != targetVol:
+            logger.debug("Volumn not acurate %s, retry", volumeNumber)
+            self.setVolumeByIR(targetVol, int(volumeNumber), retries + 1)
 
     def send(self, request):
         return self.__device__.sendUntilTerminal(request, parseResponse, ">")
