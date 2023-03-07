@@ -90,6 +90,7 @@ class GoldmundStrategy:
         return
 
     def setVolumeByIR(self, targetVol, curVol = -1, retries=0):
+        logger.debug("setVolumeByIR target:%d, currentVol:%d retries:%d",targetVol, curVol, retries)
         if retries == MAX_RETRY:
             logger.error("Max retried %s,%s", vol, retries)
             return
@@ -110,6 +111,7 @@ class GoldmundStrategy:
         else:
             logger.debug("Volumn up by %d", diff)
             cmd = VOL_DOWN + str(diff)
+        logger.debug("Send ir command %s", cmd)
         sent = self.__irDevice__.write(cmd.encode('utf-8'))
         while  self.__irDevice__.in_waiting == 0: pass
         while self.__irDevice__.in_waiting > 0:
