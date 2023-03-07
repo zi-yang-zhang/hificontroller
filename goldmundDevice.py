@@ -92,7 +92,7 @@ class GoldmundStrategy:
     def setVolumeByIR(self, targetVol, curVol, retries=0):
         logger.debug("setVolumeByIR target:%d, currentVol:%d retries:%d",targetVol, curVol, retries)
         if retries == MAX_RETRY:
-            logger.error("Max retried %s,%s", vol, retries)
+            logger.error("Max retried %s,%s", targetVol, retries)
             return
         diff = targetVol - curVol
         cmd = ""
