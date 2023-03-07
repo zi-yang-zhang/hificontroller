@@ -2,22 +2,24 @@ from protocol.goldmund import standby, setInput, setVolume, volumeUp, baudrate, 
 from hifiController import Peripheral
 from device import Device
 from hifiLogger import logger
-import serial
+import serial, time
 
 # Goldmund设备策略
 # 主设备开时开设备，并调节到频道7，音量85
 
 AV_INPUT = 5
-AV_VOLUME = 80
+AV_VOLUME = 85
 VOL_UP = "1"
 VOL_DOWN = "2"
-MAX_RETRY = 6
+MAX_RETRY = 20
 
 class GoldmundStrategy:
     def __init__(self, device: Device) -> None:
         self.__device__ = device
         self.__irDevice__ = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
         self.__irDevice__.reset_input_buffer()
+        self.__irDevice__.reset_output_buffer()
+        time.sleep(0.1) #wait for serial to open
         self.checkAndSetStatus()
         pass
 
