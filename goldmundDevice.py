@@ -7,7 +7,7 @@ import serial, time
 # Goldmund设备策略
 # 主设备开时开设备，并调节到频道7，音量85
 
-AV_INPUT = 5
+AV_INPUT = "5"
 AV_VOLUME = 85
 VOL_UP = "1"
 VOL_DOWN = "2"
