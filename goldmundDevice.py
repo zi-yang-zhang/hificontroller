@@ -44,9 +44,8 @@ class GoldmundStrategy:
             code, result = self.send(setInput(AV_INPUT))
             logger.debug("Set Input result: %s", code)
         if self.__volume != AV_VOLUME:
-            # code, result = self.send(volumeUp(AV_VOLUME))
-            self.setVolumeByIR(self.__volume)
-            logger.debug("Set Volume result: %s", code)
+            self.setVolumeByIR(AV_VOLUME)
+            logger.debug("Set Volume result")
         pass
 
     # 回复上一次状态，如果上一次的状态本来就跟AV状态一样则不变。如果上一次是standby的则会关机
@@ -60,8 +59,8 @@ class GoldmundStrategy:
             if isSuccess(code):
                 return
         if self.__volume != AV_VOLUME:
-            code, result = self.send(setVolume(self.__volume))
-            logger.debug("Set Volume result: %s", code)
+            self.setVolumeByIR(self.__volume)
+            logger.debug("Set Volume result")
         if self.__input != AV_INPUT:
             code, result = self.send(setInput(self.__input))
             logger.debug("Set Input result: %s", code)
@@ -90,11 +89,19 @@ class GoldmundStrategy:
                     self.__standby, self.__input, self.__volume)
         return
 
-    def setVolumeByIR(self, vol, retries=0):
+    def setVolumeByIR(self, targetVol, curVol = -1, retries=0):
         if retries == MAX_RETRY:
             logger.error("Max retried %s,%s", vol, retries)
             return
-        diff = AV_VOLUME - vol
+        vol = curVol
+        if vol == -1:
+            code, volume = self.send(query(volume_command))
+            if not isSuccess(code):
+                logger.error("Query failed %s,%s", code, volume)
+                return
+            command, volumeNumber = volume.split(" ")
+            vol = volumeNumber
+        diff = targetVol - vol
         cmd = ""
         if diff < 0:
             vol = diff * -1
@@ -110,12 +117,12 @@ class GoldmundStrategy:
             logger.debug("Volumn result {}", result)
         code, volume = self.send(query(volume_command))
         if not isSuccess(code):
-            logger.error("Query failed %s,%s", code, volume)
+            logger.error("Query failed %s,%s", code, volumeNumber)
             return
         command, volumeNumber = volume.split(" ")
-        if volumeNumber != AV_VOLUME:
+        if volumeNumber != targetVol:
             logger.debug("Volumn not acurate {}, retry", volumeNumber)
-            self.volumeUp(volumeNumber, retries + 1)
+            self.setVolumeByIR(targetVol, volumeNumber, retries + 1)
 
     def send(self, request):
         return self.__device__.sendUntilTerminal(request, parseResponse, ">")
