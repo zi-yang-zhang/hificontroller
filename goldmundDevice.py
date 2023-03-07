@@ -44,7 +44,7 @@ class GoldmundStrategy:
             code, result = self.send(setInput(AV_INPUT))
             logger.debug("Set Input result: %s", code)
         if self.__volume != AV_VOLUME:
-            self.setVolumeByIR(AV_VOLUME)
+            self.setVolumeByIR(AV_VOLUME, self.__volume)
             logger.debug("Set Volume result")
         pass
 
@@ -59,7 +59,7 @@ class GoldmundStrategy:
             if isSuccess(code):
                 return
         if self.__volume != AV_VOLUME:
-            self.setVolumeByIR(self.__volume)
+            self.setVolumeByIR(self.__volume, AV_VOLUME)
             logger.debug("Set Volume result")
         if self.__input != AV_INPUT:
             code, result = self.send(setInput(self.__input))
@@ -89,20 +89,12 @@ class GoldmundStrategy:
                     self.__standby, self.__input, self.__volume)
         return
 
-    def setVolumeByIR(self, targetVol, curVol = -1, retries=0):
+    def setVolumeByIR(self, targetVol, curVol, retries=0):
         logger.debug("setVolumeByIR target:%d, currentVol:%d retries:%d",targetVol, curVol, retries)
         if retries == MAX_RETRY:
             logger.error("Max retried %s,%s", vol, retries)
             return
-        vol = curVol
-        if vol == -1:
-            code, volume = self.send(query(volume_command))
-            if not isSuccess(code):
-                logger.error("Query failed %s,%s", code, volume)
-                return
-            command, volumeNumber = volume.split(" ")
-            vol = volumeNumber
-        diff = targetVol - vol
+        diff = targetVol - curVol
         cmd = ""
         if diff < 0:
             vol = diff * -1
