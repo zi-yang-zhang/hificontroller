@@ -137,8 +137,8 @@ class GoldmundStrategy:
             result = self.__irDevice__.readline().decode('utf-8').rstrip()
             logger.debug("Volumn result %s", result)
         code, standbyStatus  = self.getStandbyStatus()
-        if not isSuccess(code) or standbyStatus != "on":
-            logger.debug("standbyStatus is not on: %s", standbyStatus)
+        if not isSuccess(code) or standbyStatus != "off":
+            logger.debug("standbyStatus is not off: %s", standbyStatus)
             return
         code, volume = self.getVolumneStatus()
         if int(volume) != targetVol:
